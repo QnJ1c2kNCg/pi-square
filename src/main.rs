@@ -52,23 +52,20 @@ fn main() {
     });
 
     loop {
-        println!(
-            "[iter: {}] {}, program uptime: {:?}",
-            total_iter.load(Ordering::Relaxed),
-            pi.read().unwrap(),
-            uptime.get()
-        );
         std::thread::sleep(Duration::from_secs(args.refresh_interval_secs));
-        display.print(
-            &format!("Pi: {}", pi.read().unwrap()),
-            "",
-            &format!(
-                "Iter: {}",
-                total_iter
-                    .load(Ordering::Relaxed)
-                    .to_formatted_string(&Locale::en)
-            ),
-            &format!("Uptime: {:?}", uptime.get()),
+        let pi = &format!("Pi: {:.13}", pi.read().unwrap());
+        let iter = &format!(
+            "Iter: {}",
+            total_iter
+                .load(Ordering::Relaxed)
+                .to_formatted_string(&Locale::en)
         );
+        let uptime = &format!(
+            "Uptime: {} hrs",
+            (uptime.get().as_secs() / 3600).to_formatted_string(&Locale::en)
+        );
+        display.print(pi, "", iter, uptime);
+
+        println!("[iter: {iter}] {pi}, program uptime: {uptime}");
     }
 }
