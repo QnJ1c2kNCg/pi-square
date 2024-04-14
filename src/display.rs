@@ -29,11 +29,11 @@ impl Display {
         self.display.home();
 
         self.display.print(line_1);
-        self.display.position(2, 0);
+        self.display.position(0, 1);
         self.display.print(line_2);
-        self.display.position(2, 0);
+        self.display.position(0, 2);
         self.display.print(line_3);
-        self.display.position(0, 0);
+        self.display.position(0, 3);
         self.display.print(line_4);
     }
 }

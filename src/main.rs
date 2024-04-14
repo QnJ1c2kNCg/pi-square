@@ -53,7 +53,7 @@ fn main() {
 
     loop {
         std::thread::sleep(Duration::from_secs(args.refresh_interval_secs));
-        let pi = &format!("Pi: {:.13}", pi.read().unwrap());
+        let pi = &format!("Pi: {:.12}", pi.read().unwrap());
         let iter = &format!(
             "Iter: {}",
             total_iter
@@ -66,6 +66,6 @@ fn main() {
         );
         display.print(pi, "", iter, uptime);
 
-        println!("[iter: {iter}] {pi}, program uptime: {uptime}");
+        println!("[{iter}] {pi}, {uptime}");
     }
 }
