@@ -56,7 +56,7 @@ fn main() {
         let pi = &format!("Pi: {:.13}", pi.read().unwrap());
         let iter = &format!(
             "Iter: {}MM",
-            total_iter.load(Ordering::Relaxed) / 1_000_000.to_formatted_string(&Locale::en)
+            (total_iter.load(Ordering::Relaxed) / 1_000_000).to_formatted_string(&Locale::en)
         );
         let uptime = &format!(
             "Uptime: {} hrs",
