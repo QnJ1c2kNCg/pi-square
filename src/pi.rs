@@ -55,7 +55,7 @@ impl Dart {
     }
 }
 
-pub fn calculate_pi(target: &mut Target, iteration: u32) -> f64 {
+pub fn calculate_pi(target: &mut Target, iteration: u64) -> f64 {
     for _ in 0..iteration {
         let dart = Dart;
         dart.throw(target);
