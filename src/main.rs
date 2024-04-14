@@ -6,22 +6,26 @@ use std::{
     time::Duration,
 };
 
+use num_format::{Locale, ToFormattedString};
+
 use clap::{arg, command, Parser};
 use uptime::Uptime;
 
+use crate::display::Display;
 use crate::pi::{calculate_pi, Target};
 
+mod display;
 mod pi;
 mod uptime;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    /// Name of the person to greet
+    /// Screen refresh rate (in seconds)
     #[arg(short, long, default_value_t = 5)]
     refresh_interval_secs: u64,
 
-    /// Number of times to greet
+    /// Iteration increment to calculate pi
     #[arg(short, long, default_value_t = 100_000)]
     pi_iteration: u64,
 }
@@ -36,6 +40,8 @@ fn main() {
     let total_iter_clone = Arc::clone(&total_iter);
 
     let uptime = Uptime::new();
+
+    let mut display = Display::new();
 
     std::thread::spawn(move || {
         let mut target = Target::default();
@@ -53,5 +59,16 @@ fn main() {
             uptime.get()
         );
         std::thread::sleep(Duration::from_secs(args.refresh_interval_secs));
+        display.print(
+            &format!("Pi: {}", pi.read().unwrap()),
+            "",
+            &format!(
+                "Iter: {}",
+                total_iter
+                    .load(Ordering::Relaxed)
+                    .to_formatted_string(&Locale::en)
+            ),
+            &format!("Uptime: {:?}", uptime.get()),
+        );
     }
 }
