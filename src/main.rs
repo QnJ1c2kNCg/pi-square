@@ -55,10 +55,8 @@ fn main() {
         std::thread::sleep(Duration::from_secs(args.refresh_interval_secs));
         let pi = &format!("Pi: {:.13}", pi.read().unwrap());
         let iter = &format!(
-            "Iter: {}",
-            total_iter
-                .load(Ordering::Relaxed)
-                .to_formatted_string(&Locale::en)
+            "Iter: {}MM",
+            total_iter.load(Ordering::Relaxed) / 1_000_000.to_formatted_string(&Locale::en)
         );
         let uptime = &format!(
             "Uptime: {} hrs",
